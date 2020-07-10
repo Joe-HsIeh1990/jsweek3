@@ -6,10 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="./css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 </head>
-
 <body>
     <div id="app">
         <header class="header container my-5">
@@ -70,7 +67,7 @@
                                     <label for="image">輸入圖片網址</label>
                                     <input type="text" class="form-control" v-model="images" id="image"
                                         placeholder="請輸入圖片連結" />
-                                    <img :src="product.imageUrl"alt="">
+                                    <img :src="product.imageUrl" alt="">
                                 </div>
                                 <img class="img-fluid newimg" src="" alt />
                             </div>
@@ -137,82 +134,10 @@
         </div>
     </div>
 </body>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="module" src="./node_modules/bootstrap/dist/js/bootstrap.js"></script>
-<script>
-    var app = new Vue({
-        el: '#app',
-        data: {
-            arr: [],
-            images: '',
-            modaltext: '',
-            product: {
-
-            },
-            products: [],
-            Token: 'So3CduBJEl0e7d3Gu9dFgXQsjPzECLAl75llyqBoWQNGFDqYpA0vwuptDj7U',
-            apipath: 'https://course-ec-api.hexschool.io/',
-            UID: '0657f443-a9f0-436a-8a03-fe4e7a52465d',
-            isNew: false
-        },
-        methods: {
-            getProducts() {
-                let vm = this;
-                let api = `${vm.apipath}api/${vm.UID}/admin/ec/products`
-                axios.get(api).then((response) => {
-                    vm.products = response.data.data;
-                })
-            },
-            creatProduct() {
-                let vm = this;
-                let api = `${vm.apipath}api/${vm.UID}/admin/ec/product`;
-                let httpMethod = "post";
-                if (!vm.isNew) {
-                    api = `${vm.apipath}api/${vm.UID}/admin/ec/product/${vm.product.id}`;
-                    httpMethod = "patch";
-                }
-                let arr = [];
-                arr.push(vm.images);
-                vm.product.imageUrl = arr;
-                axios[httpMethod](api, vm.product).then(function (res) {
-                    if (res.data.success) {
-                        $("#productModal").modal("hide");
-                        vm.getProducts();
-                    } else {
-                        $("#productModal").modal("hide");
-                        vm.getProducts();
-                    }
-                })
-            },
-            deleteData(id) {
-                let vm = this;
-                let api = `${vm.apipath}api/${vm.UID}/admin/ec/product/${id}`;
-                axios.delete(api)
-                    .then(function (res) {
-                    })
-                vm.getProducts();
-            },
-            openModal(isNew, item) {
-                if (isNew) {
-                    this.modaltext = '新增產品';
-                    this.product = {};
-                    this.isNew = true;
-                } else {
-                    this.modaltext = '編輯產品';
-                    this.product = Object.assign({}, item);
-                    this.isNew = false;
-                }
-                $("#productModal").modal("show");
-            },
-
-        },
-        created() {
-            axios.defaults.headers['Authorization'] = `Bearer ${this.Token}`;
-            this.getProducts();
-        },
-    })
-
-
-</script>
+<script src="all.js"></script>
 
 </html>
