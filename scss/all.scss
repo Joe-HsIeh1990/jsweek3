@@ -1,0 +1,16 @@
+// helper
+@import "../node_modules/bootstrap/scss/functions";
+@import "./helper/variables";
+@import "../node_modules/bootstrap/scss/mixins";
+@import "../node_modules/bootstrap/scss/bootstrap";
+
+// base
+@import "./base/base";
+@import "./base/gird";
+
+// layout 
+@import "./layout/navbar";
+@import "./layout/footer";
+
+// pages
+@import "./pages/adminproducts";
