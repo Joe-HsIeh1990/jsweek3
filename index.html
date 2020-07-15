@@ -66,7 +66,7 @@
                             <div class="col-sm-4">
                                 <div class="form-group">
                                     <label for="image">輸入圖片網址</label>
-                                    <input type="text" class="form-control" v-model="images" id="image"
+                                    <input type="text" class="form-control" v-model="product.imageUrl" id="image"
                                         placeholder="請輸入圖片連結" />
                                     <img :src="product.imageUrl" alt="">
                                 </div>
@@ -128,7 +128,7 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">取消</button>
                         <button type="button" class="btn btn-primary" id="updatfilter"
-                            @click.preven="creatProduct">確認</button>
+                            @click.preven=" getProduct">確認</button>
                     </div>
                 </div>
             </div>

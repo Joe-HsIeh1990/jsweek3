@@ -2,70 +2,66 @@ var app = new Vue({
     el: '#app',
     data: {
         arr: [],
-        images: '',
         modaltext: '',
         product: {
-
         },
-        products: [],
-        Token: 'So3CduBJEl0e7d3Gu9dFgXQsjPzECLAl75llyqBoWQNGFDqYpA0vwuptDj7U',
-        apipath: 'https://course-ec-api.hexschool.io/',
-        UID: '0657f443-a9f0-436a-8a03-fe4e7a52465d',
+        products: [
+            {
+                id: 1546765915250,
+                unit: '杯',
+                category: '咖啡',
+                title: '拿鐵',
+                origin_price: 150,
+                price: 105,
+                description: '香醇牛奶配上咖啡',
+                content: '實在太香了',
+                is_enabled: 1,
+                imageUrl: 'https://images.unsplash.com/photo-1568046562322-0bbc869368ba?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=675&q=80',
+            }
+        ],
         isNew: false
     },
     methods: {
-        getProducts() {
-            let vm = this;
-            let api = `${vm.apipath}api/${vm.UID}/admin/ec/products`
-            axios.get(api).then((response) => {
-                vm.products = response.data.data;
-            })
-        },
-        creatProduct() {
-            let vm = this;
-            let api = `${vm.apipath}api/${vm.UID}/admin/ec/product`;
-            let httpMethod = "post";
-            if (!vm.isNew) {
-                api = `${vm.apipath}api/${vm.UID}/admin/ec/product/${vm.product.id}`;
-                httpMethod = "patch";
+        getProduct() {
+            if (this.product.id) {
+                const id = this.product.id;
+                this.products.forEach((item, i) => {
+                    if (item.id === id) {
+                        this.products[i] = this.product;
+                    }
+                });
+            } else {
+                const id = new Date().getTime();
+                this.product.id = id;
+                this.products.push(this.product);
             }
-            let arr = [];
-            arr.push(vm.images);
-            vm.product.imageUrl = arr;
-            axios[httpMethod](api, vm.product).then(function (res) {
-                if (res.data.success) {
-                    $("#productModal").modal("hide");
-                    vm.getProducts();
-                } else {
-                    $("#productModal").modal("hide");
-                    vm.getProducts();
-                }
-            })
-        },
-        deleteData(id) {
-            let vm = this;
-            let api = `${vm.apipath}api/${vm.UID}/admin/ec/product/${id}`;
-            axios.delete(api)
-                .then(function (res) {
-                })
-            vm.getProducts();
+            this.product = {};
+            $('#productModal').modal('hide');
         },
         openModal(isNew, item) {
-            if (isNew) {
-                this.modaltext = '新增產品';
-                this.product = {};
-                this.isNew = true;
-            } else {
-                this.modaltext = '編輯產品';
-                this.product = Object.assign({}, item);
-                this.isNew = false;
+            switch (isNew) {
+                case true:
+                    this.product = {};
+                    $('#productModal').modal('show');
+                    break;
+                case false:
+                    this.product = Object.assign({}, item);
+                    $('#productModal').modal('show');
+                    break;
+                default:
+                    break;
             }
-            $("#productModal").modal("show");
         },
-
-    },
-    created() {
-        axios.defaults.headers['Authorization'] = `Bearer ${this.Token}`;
-        this.getProducts();
+        deleteData(id) {
+            if (this.product.id) {
+                const id = this.product.id;
+                this.products.forEach((item, i) => {
+                    if (item.id === id) {
+                        this.products.splice(i, 1);
+                        this.product = {};
+                    }
+                });
+            }
+        },
     },
 })
